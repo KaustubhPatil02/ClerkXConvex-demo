@@ -16,13 +16,14 @@ export default function Home() {
 
   const createFile = useMutation(api.files.createFile);
   const getFiles = useQuery(api.files.getFiles);
-
+  const deleteFiles = useMutation(api.files.deleteFiles); // Assume this deletes multiple files
+  console.log(getFiles)
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <SignedIn>
         <SignOutButton>
-          <Button>Sign Out</Button>
+        <Button>Sign Out</Button>
         </SignOutButton>
       </SignedIn>
 
@@ -33,16 +34,22 @@ export default function Home() {
       </SignedOut>
 
       {getFiles?.map((file) => {
-        return <div key={file.id}>{file.name}</div>
+        return (
+          <div key={file.id}>
+            {file.name}
+          </div>
+        );
       })}
 
-      <Button onClick={() => {
+      <Button onClick={() =>{
         createFile({
-          name: "test"
+          name: "james"
         })
       }}> Add file</Button>
 
-
+      <Button style={{backgroundColor: 'red', color: 'white'}} onClick={() => deleteFiles({ ids: getFiles.map(file => file.id) })}>
+        Delete All Files
+      </Button>
 
     </main>
   );
