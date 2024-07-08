@@ -17,7 +17,9 @@ export const getFiles = query({
   args: {},
   async handler(ctx, args) {
     const identity = await ctx.auth.getUserIdentity();
+      // console.log(identity);
     if (!identity) {
+      throw new ConvexError("Not authenticated");
       return [];
     }
     return await ctx.db.query("files").collect();
