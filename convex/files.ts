@@ -1,20 +1,24 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { Id } from "convex/dist/cjs-types/values/value";
+// import { Id } from "convex/dist/cjs-types/values/value";
 
 export const createFile = mutation({
     args: {
       name: v.string(),
+      orgId: v.string(),
     },
     async handler(ctx, args) {
       await ctx.db.insert("files", {
         name: args.name,
+        orgId:args.orgId,
       });
     },
 });
 
 export const getFiles = query({
-  args: {},
+  args: {
+    orgId: v.string(),
+  },
   async handler(ctx, args) {
     const identity = await ctx.auth.getUserIdentity();
       // console.log(identity);

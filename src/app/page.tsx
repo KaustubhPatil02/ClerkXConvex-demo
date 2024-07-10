@@ -3,20 +3,20 @@
 
 import { Button } from "@/components/ui/button"
 import { SignedIn, SignedOut, SignOutButton } from "@clerk/clerk-react";
-import { SignInButton, useSession } from "@clerk/nextjs";
+import { SignInButton, useSession, useOrganization } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
-
-import Image from "next/image";
 import { api } from "../../convex/_generated/api";
 
 
 export default function Home() {
-
-  const session = useSession();
+  const {organization} = useOrganization();
+  console.log(organization?.id) 
+  // organization.
+  // const session = useSession();
 
   const createFile = useMutation(api.files.createFile);
   const getFiles = useQuery(api.files.getFiles);
-  const deleteFiles = useMutation(api.files.deleteFiles); // Assume this deletes multiple files
+  // const deleteFiles = useMutation(api.files.deleteFiles); // Assume this deletes multiple files
   console.log(getFiles)
 
   return (
@@ -42,8 +42,10 @@ export default function Home() {
       })}
 
       <Button onClick={() =>{
+        if(!organization) return; // This is a bug, but it's fine for now
         createFile({
-          name: "I love my family ,Yesterday neekunj took a hatrick"
+          name: "Hii there",
+          orgId: organization.id,
         })
       }}> Add file</Button>
 
