@@ -1,5 +1,4 @@
 "use client";
-// import { Calendar } from "lucide-react";
 
 import { Button } from "@/components/ui/button"
 import { SignedIn, SignedOut, SignOutButton } from "@clerk/clerk-react";
@@ -15,9 +14,11 @@ export default function Home() {
   // const session = useSession();
 
   const createFile = useMutation(api.files.createFile);
-  const getFiles = useQuery(api.files.getFiles);
+  // const files = useQuery(api.files.getFiles,
+  //   organization?.id ?{orgId: organization.id} : "skip");
+  const files = useQuery(api.files.getFiles, "skip");
   // const deleteFiles = useMutation(api.files.deleteFiles); // Assume this deletes multiple files
-  console.log(getFiles)
+  // console.log(getFiles)
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -33,25 +34,22 @@ export default function Home() {
         </SignInButton >
       </SignedOut>
 
-      {getFiles?.map((file) => {
+      {files?.map((file) => {
         return (
-          <div key={file.id}>
+          <div key={file._id}>
             {file.name}
           </div>
         );
       })}
 
-      <Button onClick={() =>{
-        if(!organization) return; // This is a bug, but it's fine for now
-        createFile({
-          name: "Hii there",
-          orgId: organization.id,
-        })
-      }}> Add file</Button>
-
-      <Button style={{backgroundColor: 'red', color: 'white'}} onClick={() => deleteFiles({ ids: getFiles.map(file => file.id) })}>
-        Delete All Files
-      </Button>
+<Button onClick={() => {
+  if (!organization || !organization.id) return; // Check if organization or organization.id is null
+  createFile({
+    name: "Hii papa",
+    orgId: organization.id, // Use organization.id directly
+  })
+}}> Add file</Button>
+     
 
     </main>
   );

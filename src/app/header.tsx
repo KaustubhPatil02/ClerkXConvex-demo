@@ -1,7 +1,7 @@
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
 export function Header() {
-    return  <div className="border-b y-4 bg-50">
+    return  <div className="border-b py-4 bg-black text-white">
         <div className="container mx-auto justify-between flex">
             <div>
                 Filelify-Drive
